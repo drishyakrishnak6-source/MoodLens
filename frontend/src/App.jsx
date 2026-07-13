@@ -1,21 +1,14 @@
-import { Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeContext";
-
-import Home from "./pages/Home";
-import History from "./pages/History";
-import HistoryDetail from "./pages/HistoryDetail";
-import Settings from "./pages/Settings";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/login";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <ThemeProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/history/:id" element={<HistoryDetail />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </ThemeProvider>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
 
