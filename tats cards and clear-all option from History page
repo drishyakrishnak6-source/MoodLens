@@ -1,0 +1,13 @@
+[1mdiff --git a/frontend/src/components/history/StatsCards.jsx b/frontend/src/components/history/StatsCards.jsx[m
+[1mindex a3e6a43..3bdce8c 100644[m
+[1m--- a/frontend/src/components/history/StatsCards.jsx[m
+[1m+++ b/frontend/src/components/history/StatsCards.jsx[m
+[36m@@ -8,7 +8,7 @@[m [mimport {[m
+ const StatsCards = ({ history }) => {[m
+   const total = history.length;[m
+ [m
+[31m-  const positive = history.filter([m
+[32m+[m[32m const positive = history.filter([m
+     (item) => item.sentiment === "Positive"[m
+   ).length;[m
+ [m
