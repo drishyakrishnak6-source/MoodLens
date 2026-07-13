@@ -4,7 +4,6 @@ import {
   getHistory,
   searchHistory,
   deleteHistory,
-  clearHistory,
   exportHistory,
 } from "../services/historyService";
 
@@ -105,7 +104,6 @@ const History = () => {
   };
 
   const [deleteModalId, setDeleteModalId] = useState(null);
-  const [showClearModal, setShowClearModal] = useState(false);
 
   const handleDelete = (id) => {
     setDeleteModalId(id);
@@ -115,21 +113,6 @@ const History = () => {
     try {
       await deleteHistory(deleteModalId);
       setDeleteModalId(null);
-      loadHistory();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleClear = () => {
-    if (history.length === 0) return;
-    setShowClearModal(true);
-  };
-
-  const confirmClear = async () => {
-    try {
-      await clearHistory(history.map((item) => item.id));
-      setShowClearModal(false);
       loadHistory();
     } catch (err) {
       console.log(err);
@@ -169,27 +152,6 @@ const History = () => {
     data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     return data;
   }, [history, filter, selectedDate]);
-
-  const stats = useMemo(() => {
-    const total = history.length;
-    const positive = history.filter(
-      (i) => i.sentiment.toLowerCase() === "positive"
-    ).length;
-    const negative = history.filter(
-      (i) => i.sentiment.toLowerCase() === "negative"
-    ).length;
-    const avgConfidence =
-      total === 0
-        ? 0
-        : history.reduce((sum, i) => sum + (i.confidence || 0), 0) / total;
-
-    return {
-      total,
-      positive,
-      negative,
-      avgConfidence: Math.round(avgConfidence * 100),
-    };
-  }, [history]);
 
   const totalPages = Math.max(1, Math.ceil(filteredHistory.length / PAGE_SIZE));
   const pagedHistory = filteredHistory.slice(
@@ -302,29 +264,6 @@ const History = () => {
                 </div>
               )}
             </div>
-
-            <button className="clear-btn" onClick={handleClear}>
-              🗑 Clear History
-            </button>
-          </div>
-        </div>
-
-        <div className="stats-container">
-          <div className="stat-card">
-            <span className="stat-label">Total Analyses</span>
-            <span className="stat-value">{stats.total}</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Positive</span>
-            <span className="stat-value positive">{stats.positive}</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Negative</span>
-            <span className="stat-value negative">{stats.negative}</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Avg. Confidence</span>
-            <span className="stat-value">{stats.avgConfidence}%</span>
           </div>
         </div>
 
@@ -501,38 +440,6 @@ const History = () => {
               </button>
               <button className="modal-delete-btn" onClick={confirmDelete}>
                 Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showClearModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowClearModal(false)}
-        >
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setShowClearModal(false)}
-            >
-              <FaTimes />
-            </button>
-            <div className="modal-icon">
-              <FaTrash />
-            </div>
-            <h3>Clear all history?</h3>
-            <p>This will delete all your mood analyses. This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button
-                className="modal-cancel-btn"
-                onClick={() => setShowClearModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="modal-delete-btn" onClick={confirmClear}>
-                Clear All
               </button>
             </div>
           </div>
