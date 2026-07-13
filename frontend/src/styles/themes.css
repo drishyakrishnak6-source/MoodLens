@@ -1,0 +1,347 @@
+/* =========================
+   MoodLens Theme System
+   Import this BEFORE history.css (and any other page CSS)
+   so all variables are already defined when used.
+   ========================= */
+
+/* ---------- DARK THEMES ---------- */
+
+:root {
+  --primary: #0284c7;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --gradient: linear-gradient(135deg, #0284c7, #38bdf8);
+  --bg-gradient: linear-gradient(135deg, #ffffff, #f0f9ff);
+
+  --text-primary: #0c2436;
+  --text-secondary: #4b6b80;
+  --text-muted: #93aebd;
+
+  --surface-03: rgba(2, 132, 199, 0.03);
+  --surface-04: rgba(2, 132, 199, 0.05);
+  --surface-05: rgba(2, 132, 199, 0.06);
+  --surface-06: rgba(2, 132, 199, 0.08);
+  --surface-08: rgba(2, 132, 199, 0.12);
+  --surface-10: rgba(2, 132, 199, 0.16);
+  --surface-12: rgba(2, 132, 199, 0.2);
+  --surface-14: rgba(2, 132, 199, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="purple"] {
+  --primary: #7c3aed;
+  --accent: #a855f7;
+  --accent-soft: rgba(168, 85, 247, 0.15);
+  --gradient: linear-gradient(135deg, #7c3aed, #a855f7);
+  --bg-gradient: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #1a1a2e;
+  --color-scheme: dark;
+}
+
+[data-theme="green"] {
+  --primary: #15803d;
+  --accent: #22c55e;
+  --accent-soft: rgba(34, 197, 94, 0.15);
+  --gradient: linear-gradient(135deg, #15803d, #22c55e);
+  --bg-gradient: linear-gradient(135deg, #0a1410, #0f1f18);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #0f1f18;
+  --color-scheme: dark;
+}
+
+[data-theme="rose"] {
+  --primary: #9f1239;
+  --accent: #e11d48;
+  --accent-soft: rgba(225, 29, 72, 0.15);
+  --gradient: linear-gradient(135deg, #9f1239, #e11d48);
+  --bg-gradient: linear-gradient(135deg, #120608, #1a0a0d);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #1a0a0d;
+  --color-scheme: dark;
+}
+
+[data-theme="blue"] {
+  --primary: #1d4ed8;
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  --gradient: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  --bg-gradient: linear-gradient(135deg, #060b16, #0a1220);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #0a1220;
+  --color-scheme: dark;
+}
+
+[data-theme="pink"] {
+  --primary: #be185d;
+  --accent: #ec4899;
+  --accent-soft: rgba(236, 72, 153, 0.15);
+  --gradient: linear-gradient(135deg, #be185d, #ec4899);
+  --bg-gradient: linear-gradient(135deg, #170a12, #200c18);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #200c18;
+  --color-scheme: dark;
+}
+
+/* ---------- LIGHT THEMES ---------- */
+
+[data-theme="lavender-light"] {
+  --primary: #7c3aed;
+  --accent: #9333ea;
+  --accent-soft: rgba(147, 51, 234, 0.12);
+  --gradient: linear-gradient(135deg, #7c3aed, #9333ea);
+  --bg-gradient: linear-gradient(135deg, #faf7ff, #f3e8ff);
+
+  --text-primary: #241a33;
+  --text-secondary: #5b5468;
+  --text-muted: #9992a3;
+
+  --surface-03: rgba(124, 58, 237, 0.03);
+  --surface-04: rgba(124, 58, 237, 0.05);
+  --surface-05: rgba(124, 58, 237, 0.06);
+  --surface-06: rgba(124, 58, 237, 0.08);
+  --surface-08: rgba(124, 58, 237, 0.12);
+  --surface-10: rgba(124, 58, 237, 0.16);
+  --surface-12: rgba(124, 58, 237, 0.2);
+  --surface-14: rgba(124, 58, 237, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="mint-light"] {
+  --primary: #15803d;
+  --accent: #16a34a;
+  --accent-soft: rgba(22, 163, 74, 0.12);
+  --gradient: linear-gradient(135deg, #15803d, #16a34a);
+  --bg-gradient: linear-gradient(135deg, #f5fdf7, #e7f9ee);
+
+  --text-primary: #14231a;
+  --text-secondary: #4c5c53;
+  --text-muted: #8a9a91;
+
+  --surface-03: rgba(21, 128, 61, 0.03);
+  --surface-04: rgba(21, 128, 61, 0.05);
+  --surface-05: rgba(21, 128, 61, 0.06);
+  --surface-06: rgba(21, 128, 61, 0.08);
+  --surface-08: rgba(21, 128, 61, 0.12);
+  --surface-10: rgba(21, 128, 61, 0.16);
+  --surface-12: rgba(21, 128, 61, 0.2);
+  --surface-14: rgba(21, 128, 61, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="peach-light"] {
+  --primary: #c2410c;
+  --accent: #f97316;
+  --accent-soft: rgba(249, 115, 22, 0.12);
+  --gradient: linear-gradient(135deg, #c2410c, #f97316);
+  --bg-gradient: linear-gradient(135deg, #fff8f3, #ffedd9);
+
+  --text-primary: #2c1c10;
+  --text-secondary: #6b5a4a;
+  --text-muted: #a8988a;
+
+  --surface-03: rgba(194, 65, 12, 0.03);
+  --surface-04: rgba(194, 65, 12, 0.05);
+  --surface-05: rgba(194, 65, 12, 0.06);
+  --surface-06: rgba(194, 65, 12, 0.08);
+  --surface-08: rgba(194, 65, 12, 0.12);
+  --surface-10: rgba(194, 65, 12, 0.16);
+  --surface-12: rgba(194, 65, 12, 0.2);
+  --surface-14: rgba(194, 65, 12, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+/* ---------- NEW THEMES ---------- */
+
+[data-theme="mint-wellness"] {
+  --primary: #0f766e;
+  --accent: #2dd4bf;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+  --gradient: linear-gradient(135deg, #0f766e, #2dd4bf);
+  --bg-gradient: linear-gradient(135deg, #f0fdfa, #e6fffa);
+
+  --text-primary: #0f2027;
+  --text-secondary: #4b6a63;
+  --text-muted: #8fa9a1;
+
+  --surface-03: rgba(15, 118, 110, 0.03);
+  --surface-04: rgba(15, 118, 110, 0.05);
+  --surface-05: rgba(15, 118, 110, 0.06);
+  --surface-06: rgba(15, 118, 110, 0.08);
+  --surface-08: rgba(15, 118, 110, 0.12);
+  --surface-10: rgba(15, 118, 110, 0.16);
+  --surface-12: rgba(15, 118, 110, 0.2);
+  --surface-14: rgba(15, 118, 110, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="peach-coral"] {
+  --primary: #e2572b;
+  --accent: #ff7f50;
+  --accent-soft: rgba(255, 127, 80, 0.14);
+  --gradient: linear-gradient(135deg, #e2572b, #ff7f50);
+  --bg-gradient: linear-gradient(135deg, #fff7f0, #ffe8d6);
+
+  --text-primary: #3a2318;
+  --text-secondary: #7a5c47;
+  --text-muted: #b39a86;
+
+  --surface-03: rgba(226, 87, 43, 0.03);
+  --surface-04: rgba(226, 87, 43, 0.05);
+  --surface-05: rgba(226, 87, 43, 0.06);
+  --surface-06: rgba(226, 87, 43, 0.08);
+  --surface-08: rgba(226, 87, 43, 0.12);
+  --surface-10: rgba(226, 87, 43, 0.16);
+  --surface-12: rgba(226, 87, 43, 0.2);
+  --surface-14: rgba(226, 87, 43, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="sky-blue-white"] {
+  --primary: #0284c7;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --gradient: linear-gradient(135deg, #0284c7, #38bdf8);
+  --bg-gradient: linear-gradient(135deg, #ffffff, #f0f9ff);
+
+  --text-primary: #0c2436;
+  --text-secondary: #4b6b80;
+  --text-muted: #93aebd;
+
+  --surface-03: rgba(2, 132, 199, 0.03);
+  --surface-04: rgba(2, 132, 199, 0.05);
+  --surface-05: rgba(2, 132, 199, 0.06);
+  --surface-06: rgba(2, 132, 199, 0.08);
+  --surface-08: rgba(2, 132, 199, 0.12);
+  --surface-10: rgba(2, 132, 199, 0.16);
+  --surface-12: rgba(2, 132, 199, 0.2);
+  --surface-14: rgba(2, 132, 199, 0.24);
+
+  --solid-bg: #ffffff;
+  --color-scheme: light;
+}
+
+[data-theme="charcoal-ice-blue"] {
+  --primary: #0e7490;
+  --accent: #7dd3fc;
+  --accent-soft: rgba(125, 211, 252, 0.15);
+  --gradient: linear-gradient(135deg, #0e7490, #7dd3fc);
+  --bg-gradient: linear-gradient(135deg, #1c1f22, #26292d);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #a8b3ba;
+  --text-muted: #6b7680;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #26292d;
+  --color-scheme: dark;
+}
+
+[data-theme="aurora-blue-dark"] {
+  --primary: #1e3a8a;
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.15);
+  --gradient: linear-gradient(135deg, #1e3a8a, #22d3ee 55%, #a78bfa);
+  --bg-gradient: linear-gradient(135deg, #050814, #0a1128);
+
+  --text-primary: #e0f2fe;
+  --text-secondary: #93a5b8;
+  --text-muted: #5f7186;
+
+  --surface-03: rgba(255, 255, 255, 0.03);
+  --surface-04: rgba(255, 255, 255, 0.04);
+  --surface-05: rgba(255, 255, 255, 0.05);
+  --surface-06: rgba(255, 255, 255, 0.06);
+  --surface-08: rgba(255, 255, 255, 0.08);
+  --surface-10: rgba(255, 255, 255, 0.1);
+  --surface-12: rgba(255, 255, 255, 0.12);
+  --surface-14: rgba(255, 255, 255, 0.14);
+
+  --solid-bg: #0a1128;
+  --color-scheme: dark;
+}
