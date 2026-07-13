@@ -2,7 +2,7 @@
 # Matches "4. Database Design" in the architecture doc.
 # If teammates already created User/Analysis models, merge instead of overwriting.
 
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -28,11 +28,11 @@ class Analysis(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    text = Column(String, nullable=False)
-    sentiment = Column(String, nullable=False)       # "Positive" | "Negative" | "Neutral"
+    text = Column(Text, nullable=False)
+    sentiment = Column(String, nullable=False)  # "Positive" | "Negative" | "Neutral"
     confidence = Column(Float, nullable=False)
-    emotions = Column(String, nullable=True)          # JSON string, e.g. '{"joy":0.8}'
-    entities = Column(String, nullable=True)           # JSON string, e.g. '["Paris","John"]'
+    emotions = Column(Text, nullable=True)  # JSON string, e.g. '{"joy":0.8}'
+    entities = Column(Text, nullable=True)  # JSON string, e.g. '["Paris","John"]'
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     owner = relationship("User", back_populates="analyses")

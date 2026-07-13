@@ -21,3 +21,19 @@ class AnalysisOut(BaseModel):
 
 class HistoryResponse(BaseModel):
     data: List[AnalysisOut]
+    
+# Add these two classes into the EXISTING server/app/schemas.py
+# (don't overwrite the whole file -- just add these alongside what's there)
+
+from pydantic import BaseModel
+
+
+class AnalyzeRequest(BaseModel):
+    text: str
+
+
+class AnalyzeResponse(BaseModel):
+    sentiment: str
+    confidence: float
+    emotions: str
+    entities: str
