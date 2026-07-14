@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import Base, engine
-from .routes import analysis, history, auth  # <-- add this import for your teammates' routers too
+from .routes import history, analysis, auth
 
 # Creates tables from models.py if they don't exist yet.
 # Once teammates add their own models, this will pick those up too.
@@ -25,7 +25,7 @@ app.add_middleware(
 
 app.include_router(history.router)
 app.include_router(analysis.router)
-app.include_router(auth.router)   # <- teammate adds this once /login, /register exist
+app.include_router(auth.router)
 
 
 @app.get("/")
