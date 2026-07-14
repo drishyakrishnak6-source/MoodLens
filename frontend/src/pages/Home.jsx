@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { analyzeText } from "../services/analysisservices";
+import { analyzeText } from "../services/analysisService.js";
 import { detectCrisis, detectViolentIdeation } from "../crisisDetection";
 import {
   FaHome,
@@ -26,18 +26,26 @@ const EMOTION_DISPLAY = {
   neutral: { emoji: "😐", name: "Neutral" },
 };
 
-const ENTITY_TYPE_DISPLAY = {
-  PER: { icon: "👤", label: "People" },
-  ORG: { icon: "🏢", label: "Organizations" },
-  LOC: { icon: "📍", label: "Locations" },
-  MISC: { icon: "🏷️", label: "Other" },
-};
-
 const CRISIS_RESOURCES = [
   { label: "🇮🇳 KIRAN Mental Health Helpline (24/7)", value: "1800-599-0019", tel: "18005990019" },
   { label: "🇮🇳 Vandrevala Foundation (24/7)", value: "1860-2662-345", tel: "18602662345" },
   { label: "🌍 International / US", value: "988", tel: "988" },
 ];
+
+// Backend packs the FULL emotion breakdown (all 28 labels + scores) as a
+// JSON string in "emotions" -- see server/app/app_ai.py's analyze(). This
+// parses that back out; falls back gracefully if an older cached record
+// only has the plain top-emotion string (from before that change).
+function parseEmotions(raw) {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+  } catch (_) {
+    return [{ label: raw, score: 1 }]; // old format: plain label string
+  }
+  return [];
+}
 
 const Home = () => {
   const [text, setText] = useState("");
@@ -49,9 +57,6 @@ const Home = () => {
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
-
-    console.log("DEBUG: Your VITE_HF_TOKEN value is:", import.meta.env.VITE_HF_TOKEN);
-
     setLoading(true);
     setError("");
     setResult(null);
@@ -79,16 +84,13 @@ const Home = () => {
     }
   };
 
-  const topEmotion = result?.emotions?.top_emotion || "neutral";
-  const emotionDisplay = EMOTION_DISPLAY[topEmotion] || { emoji: "😐", name: topEmotion };
-  const secondaryEmotions = (result?.emotions?.all_emotions || []).slice(1, 3);
-  const isPositive = result?.sentiment === "POSITIVE";
-
-  const entitiesByType = {};
-  (result?.entities || []).forEach((e) => {
-    if (!entitiesByType[e.type]) entitiesByType[e.type] = [];
-    if (!entitiesByType[e.type].includes(e.text)) entitiesByType[e.type].push(e.text);
-  });
+  const allEmotions = parseEmotions(result?.emotions); // sorted strongest-first
+  const topEmotion = (allEmotions[0]?.label || "neutral").toLowerCase();
+  const emotionDisplay = EMOTION_DISPLAY[topEmotion] || { emoji: "😐", name: allEmotions[0]?.label || "Neutral" };
+  // Backend returns "sentiment" capitalized, e.g. "Positive" / "Negative"
+  const isPositive = result?.sentiment === "Positive";
+  // Backend returns "entities" as a single comma-joined string, e.g. "Paris, Sarah"
+  const entityList = (result?.entities || "").split(",").map((s) => s.trim()).filter(Boolean);
 
   return (
     <div className="history-page">
@@ -178,12 +180,12 @@ const Home = () => {
               </div>
               <div style={{ flex: 1 }}>
                 <p>
-                  Emotion: <strong>{emotionDisplay.name}</strong>
+                  Primary emotion: <strong>{emotionDisplay.name}</strong>
                 </p>
                 <p>
                   Sentiment:{" "}
                   <strong className={isPositive ? "sentiment-positive" : "sentiment-negative"}>
-                    {isPositive ? "Positive" : "Negative"}
+                    {result.sentiment}
                   </strong>
                 </p>
                 <p>
@@ -200,26 +202,32 @@ const Home = () => {
               </p>
             )}
 
-            {secondaryEmotions.length > 0 && (
-              <p>
-                Also detected:{" "}
-                {secondaryEmotions
-                  .map((e) => `${EMOTION_DISPLAY[e.label]?.name || e.label} (${Math.round(e.score * 100)}%)`)
-                  .join(", ")}
-              </p>
+            {allEmotions.filter((e) => e.score >= 0.05).length > 1 && (
+              <div className="all-emotions-block">
+                <p style={{ marginBottom: 8 }}>Emotions detected in this entry:</p>
+                {allEmotions
+                  .filter((e) => e.score >= 0.05) // hide near-zero noise from the other ~20 labels
+                  .map((e) => {
+                    const display = EMOTION_DISPLAY[e.label?.toLowerCase()] || { emoji: "❔", name: e.label };
+                    const pct = Math.round(e.score * 100);
+                    return (
+                      <div className="emotion-bar-row" key={e.label}>
+                        <span className="emotion-bar-label">
+                          {display.emoji} {display.name}
+                        </span>
+                        <div className="emotion-bar-track">
+                          <div className="emotion-bar-fill" style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className="emotion-bar-pct">{pct}%</span>
+                      </div>
+                    );
+                  })}
+              </div>
             )}
 
-            {Object.keys(entitiesByType).length > 0 && (
+            {entityList.length > 0 && (
               <div className="entities-block">
-                <p style={{ marginBottom: 6 }}>Mentioned in your entry:</p>
-                {Object.entries(entitiesByType).map(([type, names]) => {
-                  const display = ENTITY_TYPE_DISPLAY[type] || { icon: "🏷️", label: type };
-                  return (
-                    <p key={type} style={{ fontSize: 13 }}>
-                      {display.icon} {display.label}: {names.join(", ")}
-                    </p>
-                  );
-                })}
+                <p>Mentioned in your entry: {entityList.join(", ")}</p>
               </div>
             )}
           </div>

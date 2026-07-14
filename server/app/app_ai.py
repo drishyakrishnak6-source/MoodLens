@@ -16,7 +16,7 @@ Setup required (one-time):
   1. pip install huggingface_hub  (already in requirements.txt)
   2. Get a token at https://huggingface.co/settings/tokens
      -- use a "fine-grained" token with "Make calls to Inference Providers" checked
-  3. Put it in backend/.env as HF_TOKEN=hf_xxxxxxxxxxxx
+  3. Put it in server/.env as HF_TOKEN=hf_xxxxxxxxxxxx
 
 If a specific model ever isn't available through serverless inference
 (this can happen for less-popular models), swap SENTIMENT_MODEL /
@@ -26,6 +26,7 @@ the "Inference Providers" section on the model card to confirm availability.
 """
 
 import os
+import json
 from huggingface_hub import InferenceClient
 
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -46,7 +47,7 @@ def _field(item, key):
 
 
 def analyze_sentiment(text: str) -> dict:
-    """Returns {"label": "POSITIVE" | "NEGATIVE", "score": float}."""
+    """Returns {"label": "Positive" | "Negative", "score": float}."""
     try:
         results = client.text_classification(text, model=SENTIMENT_MODEL)
         top = max(results, key=lambda r: _field(r, "score"))
@@ -66,9 +67,8 @@ def analyze_emotion(text: str) -> dict:
     anger, disgust, fear, joy, neutral, sadness, surprise.
 
     Returns {"top_emotion": str, "confidence": float, "all_emotions": [...]}
-    -- all_emotions is included (not just the top one) so the frontend can
-    show "also detected" secondary emotions, same idea as multi-emotion
-    detection.
+    -- all_emotions contains EVERY label the model scored (all 7), sorted
+    strongest-first, not just the top one.
     """
     try:
         results = client.text_classification(text, model=EMOTION_MODEL)
@@ -84,18 +84,6 @@ def analyze_emotion(text: str) -> dict:
     except Exception as e:
         raise RuntimeError(f"Emotion model call failed: {e}") from e
 
-def analyze(text: str) -> dict:
-    """Perform sentiment, emotion, and NER analysis for the given text."""
-    sentiment = analyze_sentiment(text)
-    emotion = analyze_emotion(text)
-    entities = extract_entities(text)
-
-    return {
-        "sentiment": sentiment["label"],
-        "confidence": sentiment["score"],
-        "emotions": emotion["top_emotion"],
-        "entities": ", ".join([entity["text"] for entity in entities]) if entities else "",
-    }
 
 def extract_entities(text: str) -> list:
     """
@@ -116,3 +104,28 @@ def extract_entities(text: str) -> list:
         ]
     except Exception as e:
         raise RuntimeError(f"NER model call failed: {e}") from e
+
+
+def analyze(text: str) -> dict:
+    """
+    Perform sentiment, emotion, and NER analysis for the given text.
+
+    NOTE on "emotions": AnalyzeResponse.emotions is typed as `str` in
+    schemas.py, so rather than changing that shared file (which History
+    and other routes might also touch), this packs the FULL emotion
+    breakdown -- all 7 labels with their scores, not just the strongest
+    one -- into a JSON string. It's still a valid `str` as far as the
+    schema/database are concerned, just one that happens to contain
+    structured data. The frontend does JSON.parse(result.emotions) to get
+    the full list back out.
+    """
+    sentiment = analyze_sentiment(text)
+    emotion = analyze_emotion(text)
+    entities = extract_entities(text)
+
+    return {
+        "sentiment": sentiment["label"],
+        "confidence": sentiment["score"],
+        "emotions": json.dumps(emotion["all_emotions"]),
+        "entities": ", ".join([entity["text"] for entity in entities]) if entities else "",
+    }

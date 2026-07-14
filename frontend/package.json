@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rolldown/plugin-babel": "^0.1.8",
     "axios": "^1.18.1",
     "framer-motion": "^12.42.2",
     "react": "^18.2.0",
