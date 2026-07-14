@@ -1,3 +1,8 @@
+# SHARED FILE — used by the whole team.
+# The teammate building Login/Register owns token *creation* at /login and /register.
+# History only needs get_current_user() to protect its routes with the same tokens.
+# If a teammate already has an auth.py, merge — don't run two different JWT setups.
+
 import os
 from datetime import datetime, timedelta
 
@@ -5,7 +10,6 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from .database import get_db
@@ -18,17 +22,9 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30  # 30 days
 
 # HTTPBearer gives a simple "paste your token" field in Swagger UI
+# (OAuth2PasswordBearer would instead show a username/password login form,
+# which we don't need since /login doesn't exist yet).
 bearer_scheme = HTTPBearer()
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
-
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):

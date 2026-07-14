@@ -1,0 +1,68 @@
+.analyze-input-section {
+  background: var(--surface-04, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.analyze-input-section h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.analyze-input-section textarea {
+  width: 100%;
+  min-height: 140px;
+  background: var(--input-bg, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 6px 0 14px;
+}
+
+.analyze-btn {
+  background: var(--gradient);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.analyze-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.analyze-error {
+  color: #f87171;
+  margin-bottom: 16px;
+}
+
+.analyze-result-section {
+  background: var(--surface-04, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.analyze-result-section p {
+  margin: 4px 0;
+  color: var(--text-primary);
+  font-size: 14px;
+}

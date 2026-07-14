@@ -1,69 +1,81 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "http://localhost:8000";
 
-// Register a new user
-export async function registerUser(username, email, password) {
-  const response = await axios.post(`${API_URL}/register`, {
+const api = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+// Attach JWT token to every outgoing request if present
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const registerUser = async (username, email, password) => {
+  const response = await api.post("/auth/register", {
     username,
     email,
     password,
   });
-  if (response.data.access_token) {
+
+  if (response.data?.access_token) {
     localStorage.setItem("token", response.data.access_token);
   }
+
   return response.data;
-}
+};
 
-// Login — FastAPI's OAuth2PasswordRequestForm needs form-urlencoded data
-export async function loginUser(email, password) {
-  const formData = new URLSearchParams();
-  formData.append("username", email); // backend calls it "username" but we send email
-  formData.append("password", password);
-
-  const response = await axios.post(`${API_URL}/login`, formData, {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+export const loginUser = async (email, password) => {
+  const response = await api.post("/auth/login", {
+    email,
+    password,
   });
 
-  if (response.data.access_token) {
+  if (response.data?.access_token) {
     localStorage.setItem("token", response.data.access_token);
   }
-  return response.data;
-}
 
-export async function loginWithGoogle(token, email = null, name = null) {
-  const response = await axios.post(`${API_URL}/auth/google`, {
-    token,
+  return response.data;
+};
+
+export const loginWithGoogle = async (mockToken, email, name) => {
+  const response = await api.post("/auth/google", {
+    token: mockToken,
     email,
     name,
   });
-  if (response.data.access_token) {
+
+  if (response.data?.access_token) {
     localStorage.setItem("token", response.data.access_token);
   }
-  return response.data;
-}
 
-export async function loginWithApple(token, email = null, name = null) {
-  const response = await axios.post(`${API_URL}/auth/apple`, {
-    token,
+  return response.data;
+};
+
+export const loginWithApple = async (mockToken, email, name) => {
+  const response = await api.post("/auth/apple", {
+    token: mockToken,
     email,
     name,
   });
-  if (response.data.access_token) {
+
+  if (response.data?.access_token) {
     localStorage.setItem("token", response.data.access_token);
   }
+
   return response.data;
-}
+};
 
-
-export function logoutUser() {
+export const logoutUser = () => {
   localStorage.removeItem("token");
-}
+};
 
-export function getToken() {
+export const getCurrentToken = () => {
   return localStorage.getItem("token");
-}
+};
 
-export function isAuthenticated() {
-  return !!getToken();
-}
+export default api;
