@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { analyzeText } from "../services/analysisService.js";
-import { detectCrisis, detectViolentIdeation } from "../crisisDetection";
+
 import {
   FaHome,
   FaBrain,
@@ -10,9 +9,6 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import Logo from "../components/Logo";
-import DailyQuote from "../components/DailyQuote";
-import "../styles/history.css"; // reuses the shared sidebar/layout classes
-import "../styles/home.css";
 
 // Display info for the 7 labels the Hugging Face emotion model
 // (j-hartmann/emotion-english-distilroberta-base) returns.
