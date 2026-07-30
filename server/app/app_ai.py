@@ -27,12 +27,20 @@ the "Inference Providers" section on the model card to confirm availability.
 
 import os
 import json
+from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
+load_dotenv()
+
 HF_TOKEN = os.getenv("HF_TOKEN")
+if not HF_TOKEN:
+    raise RuntimeError(
+        "HF_TOKEN is not set. Add HF_TOKEN=hf_xxxxx to server/.env "
+        "(get one at https://huggingface.co/settings/tokens) and restart uvicorn."
+    )
 client = InferenceClient(token=HF_TOKEN)
 
-SENTIMENT_MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
+SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 EMOTION_MODEL = "j-hartmann/emotion-english-distilroberta-base"
 NER_MODEL = "dslim/bert-base-NER"
 
